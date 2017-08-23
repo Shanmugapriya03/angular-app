@@ -1,10 +1,8 @@
 <div
-  class="main
+  class="container main
   col-md-5
   list-scroll"
-  [ngClass]="{
-    'primaryView':!selectedFlag
-  }" >
+   >
   <h2>GST Rate Comparison</h2>
   <form>
     <label for="search"></label>
@@ -28,7 +26,7 @@
       </tbody>
   </table>
 </div>
-<div class="main col-md-7" *ngIf="selectedFlag === true">
+<div class="container main col-md-7" *ngIf="selectedFlag === true">
   <div class="">
     <button  *ngIf="!selectedGstFlag" class="btn btn-primary btn-lg" (click)="selectedView()">See How GST affects Your Budget</button>
     <h2 *ngIf="selectedGstFlag">How GST affects your monthly budget</h2>
@@ -76,7 +74,7 @@
     <p *ngIf="!caption">Looks like you would be spending {{(totalChange( totalCurrentSpend(), totalBudgetAfterGst() )).toFixed(2)}}% more under GST than before</p>
     <p *ngIf="caption">Looks like you would be spending {{(totalChange( totalCurrentSpend(), totalBudgetAfterGst() )).toFixed(2)}}% less under GST than before</p>
   </div>
-  <div *ngIf="selectedGstFlag" class="size">
+  <div *ngIf="selectedGstFlag" class="container size">
     <canvas baseChart
           [data]="pieChartData"
           [labels]="pieChartLabels"
