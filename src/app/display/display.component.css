@@ -1,0 +1,31 @@
+.main{
+  padding : 20px;
+}
+.selection{
+  cursor: pointer;;
+}
+.remove{
+  float: right;
+  cursor:pointer;
+}
+.removeItem{
+  float: left;
+  cursor:pointer;
+}
+.dot{
+	width: 10px;
+	height: 10px;
+	display: block;
+	float: left;
+	margin: 10%;
+	border-radius: 15px;
+}
+.size{
+  max-width: 300px;
+}
+.primaryView{
+  margin-left: 400px;
+}
+.secondaryView{
+  margin-left: 0px;
+}

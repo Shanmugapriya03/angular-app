@@ -1,0 +1,89 @@
+<div
+  class="main
+  col-md-5
+  list-scroll"
+  [ngClass]="{
+    'primaryView':!selectedFlag
+  }" >
+  <h2>GST Rate Comparison</h2>
+  <form>
+    <label for="search"></label>
+    <input type="text" name="search" placeholder="Search Box" [(ngModel)]="searchText" class="form-control">
+  </form>
+  <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th *ngIf="!selectedGstFlag">Old Rate</th>
+          <th *ngIf="!selectedGstFlag">Gst Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let good of goods |search:searchText">
+          <td><span class="glyphicon glyphicon-plus selection" (click)="selectedItems(good)"></span>&nbsp;{{good['product-label']}}</td>
+          <td *ngIf="!selectedGstFlag">{{good['old-rate']}}</td>
+          <td *ngIf="!selectedGstFlag"><span class="dot"  [ngStyle]="{backgroundColor:getVisual(good)}"></span>&nbsp;{{good['gst-rate']}}</td>
+        </tr>
+
+      </tbody>
+  </table>
+</div>
+<div class="main col-md-7" *ngIf="selectedFlag === true">
+  <div class="">
+    <button  *ngIf="!selectedGstFlag" class="btn btn-primary btn-lg" (click)="selectedView()">See How GST affects Your Budget</button>
+    <h2 *ngIf="selectedGstFlag">How GST affects your monthly budget</h2>
+    <span class="glyphicon glyphicon-remove remove" (click)="initialView()"></span>
+  </div>
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th>Your ShortList</th>
+          <th>Current Spend</th>
+          <th *ngIf="selectedGstFlag">Budget After Gst</th>
+          <th *ngIf="selectedGstFlag">Change</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of selected">
+          <td> {{item}}</td>
+          <td ><input type="text" (input)="calculateAmount($event,selected.indexOf(item))"></td>
+          <td *ngIf="selectedGstFlag">
+            {{
+              budgetAfterGst(selected.indexOf(item)).toFixed(2)
+
+            }}
+          </td>
+          <td *ngIf="selectedGstFlag"><span class="dot" [ngStyle]="{backgroundColor:getColor(item)}"></span>&nbsp;{{changePercentage[selected.indexOf(item)].toFixed(2)}}&nbsp;%</td>
+        </tr>
+        <tr>
+          <td *ngIf="selectedGstFlag">Total</td>
+          <td *ngIf="selectedGstFlag">{{totalCurrentSpend().toFixed(2)}}</td>
+          <td *ngIf="selectedGstFlag">{{totalBudgetAfterGst().toFixed(2)}}</td>
+          <td *ngIf="selectedGstFlag">
+            <span class="dot"
+              [ngStyle]="{backgroundColor:getPercentageChange(totalCurrentSpend(),totalBudgetAfterGst())}">
+            </span>
+            &nbsp;{{
+              (totalChange( totalCurrentSpend(), totalBudgetAfterGst() )).toFixed(2)
+            }}%</td>
+        </tr>
+      </tbody>
+  </table>
+  <div *ngIf="selectedGstFlag">
+
+    <p *ngIf="!caption">Looks like you would be spending {{(totalChange( totalCurrentSpend(), totalBudgetAfterGst() )).toFixed(2)}}% more under GST than before</p>
+    <p *ngIf="caption">Looks like you would be spending {{(totalChange( totalCurrentSpend(), totalBudgetAfterGst() )).toFixed(2)}}% less under GST than before</p>
+  </div>
+  <div *ngIf="selectedGstFlag" class="size">
+    <canvas baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [legend]="true"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+</div>
