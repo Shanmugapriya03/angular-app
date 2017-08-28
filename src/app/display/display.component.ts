@@ -74,6 +74,11 @@ export class DisplayComponent implements OnInit {
     this.currentSpend=[];
 
   }
+  removeItem(item){
+    let i =this.selected.indexOf(item);
+    this.selected.splice(i,1);
+  }
+
   calculateAmount(event:Event,index){
     this.currentSpend[index]=((<HTMLInputElement>event.target).value);
   }
